@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成都旅游网站 | 天府之国 · 成都旅游指南</title>
+<meta name="description" content="成都旅游网站：景点、美食、巴蜀文化、旅行攻略，一座来了就不想走的城市。">
+<style>
+/* ==========================================================
+   成都旅游网站 —— 纯 HTML + CSS 实现（无 JavaScript）
+   设计基调：高级简约 / 米白 + 暖红 + 浅咖 + 深灰
+   ========================================================== */
+
+/* ---------- 全局基础样式 ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #faf7f1;          /* 米白背景 */
+  --bg-alt: #f3ede1;      /* 浅米背景（分区用） */
+  --card: #ffffff;        /* 卡片白 */
+  --ink: #34302a;         /* 深灰主文字 */
+  --ink-soft: #77715f;    /* 次级灰文字 */
+  --red: #b0453a;         /* 暖红（点缀色） */
+  --red-deep: #8e382e;    /* 深暖红（悬停） */
+  --coffee: #a78a6e;      /* 浅咖啡 */
+  --line: #e8e0d0;        /* 分隔线 */
+  --radius: 14px;
+  --shadow: 0 6px 24px rgba(80, 60, 40, .08);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+.container { width: min(1120px, 92%); margin: 0 auto; }
+
+/* ---------- 顶部导航 ---------- */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250, 247, 241, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 22px; font-weight: 700; letter-spacing: 3px; line-height: 1.2; }
+.logo span { display: block; font-size: 11px; font-weight: 600; letter-spacing: 5px; color: var(--red); }
+.site-nav ul { display: flex; gap: 38px; }
+.site-nav a {
+  font-size: 15px; color: var(--ink-soft);
+  padding: 6px 0; position: relative;
+  transition: color .25s;           /* 柔和的悬停过渡 */
+}
+.site-nav a::after {
+  content: ""; position: absolute; left: 50%; bottom: 0;
+  width: 0; height: 2px; border-radius: 2px;
+  background: var(--red); transform: translateX(-50%);
+  transition: width .25s;
+}
+.site-nav a:hover { color: var(--red); }
+.site-nav a:hover::after { width: 100%; }
+
+/* ---------- Banner 大图 ---------- */
+.hero {
+  height: 92vh; min-height: 560px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; color: #fff;
+  background: url(/Photo/宽窄巷子.jpg) center/cover no-repeat;
+  position: relative;
+}
+.hero::before {                    /* 轻压一层暗色，保证文字可读 */
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(32,26,20,.55), rgba(32,26,20,.30) 45%, rgba(24,19,14,.68));
+}
+.hero-content { position: relative; padding: 0 20px; }
+.hero-tag { font-size: 13px; letter-spacing: 6px; opacity: .85; margin-bottom: 18px; }
+.hero h1 {
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: clamp(44px, 7vw, 82px);
+  letter-spacing: 10px; font-weight: 700;
+  text-shadow: 0 4px 30px rgba(0,0,0,.35);
+}
+.hero-sub { font-size: clamp(17px, 2.4vw, 24px); letter-spacing: 6px; margin-top: 16px; opacity: .95; }
+.hero-desc { max-width: 640px; margin: 26px auto 0; font-size: 15px; opacity: .88; }
+.hero-btns { margin-top: 44px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 13px 34px; border-radius: 999px;
+  font-size: 15px; letter-spacing: 3px;
+  transition: all .3s;
+}
+.btn-solid { background: var(--red); color: #fff; }
+.btn-solid:hover { background: var(--red-deep); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(140,50,40,.35); }
+.btn-ghost { border: 1px solid rgba(255,255,255,.65); color: #fff; }
+.btn-ghost:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
+
+/* ---------- 通用分区标题 ---------- */
+section { padding: 90px 0; }
+.section-head { text-align: center; margin-bottom: 54px; }
+.section-head .en {
+  font-size: 12px; letter-spacing: 5px;
+  color: var(--red); font-weight: 600; text-transform: uppercase;
+}
+.section-head h2 {
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 34px; letter-spacing: 8px; margin-top: 10px;
+}
+.section-head .line { width: 56px; height: 3px; background: var(--red); opacity: .85; margin: 18px auto 0; border-radius: 2px; }
+.section-head .sub { color: var(--ink-soft); margin-top: 14px; font-size: 15px; }
+
+/* ---------- 城市简介 ---------- */
+.about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+.about-text p { margin-bottom: 14px; color: #4d483e; font-size: 15.5px; text-align: justify; }
+.tags { display: flex; gap: 12px; margin: 24px 0 30px; flex-wrap: wrap; }
+.tags span {
+  padding: 7px 20px; border: 1px solid var(--red);
+  color: var(--red); border-radius: 999px;
+  font-size: 14px; letter-spacing: 3px;
+  transition: background .3s, color .3s;
+}
+.tags span:hover { background: var(--red); color: #fff; }
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  border-top: 1px dashed var(--line); padding-top: 26px;
+}
+.stats b { font-size: 26px; color: var(--red); font-weight: 700; }
+.stats i { font-style: normal; display: block; font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; }
+.about-photo { position: relative; }
+.about-photo img {
+  width: 100%; height: 430px; object-fit: cover;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.about-photo::before {              /* 错位描边装饰 */
+  content: ""; position: absolute; z-index: -1;
+  right: -14px; bottom: -14px; width: 74%; height: 74%;
+  border: 2px solid var(--coffee); border-radius: var(--radius);
+}
+/* ---------- 热门景点 ---------- */
+.spots { background: var(--bg-alt); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.spot-card {
+  background: var(--card); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .3s, box-shadow .3s;
+}
+.spot-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(80,60,40,.16); }
+.spot-card figure { height: 210px; overflow: hidden; }
+.spot-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.spot-card:hover img { transform: scale(1.06); }
+.spot-body { padding: 22px 24px 24px; }
+.spot-body h3 { font-size: 19px; letter-spacing: 1px; }
+.spot-body h3 small { margin-left: 8px; font-size: 12px; font-weight: 400; color: var(--coffee); letter-spacing: 1px; }
+.spot-body .intro { margin-top: 10px; color: #5c574b; font-size: 14px; text-align: justify; }
+.spot-body .reason {
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: 13.5px; color: var(--red);
+}
+
+/* ---------- 舌尖成都（美食） ---------- */
+.food-item {
+  display: grid; grid-template-columns: 300px 1fr; gap: 34px;
+  align-items: center; margin-bottom: 24px;
+  background: var(--card); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .3s;
+}
+.food-item:hover { transform: translateY(-4px); }
+.food-item figure { height: 200px; overflow: hidden; }
+.food-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.food-item:hover img { transform: scale(1.05); }
+.food-body { padding: 14px 34px 14px 0; }
+.food-body em {
+  font-style: normal; font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 30px; color: var(--line); font-weight: 700;
+  vertical-align: middle; margin-right: 12px;
+}
+.food-body h3 { font-size: 20px; letter-spacing: 2px; display: inline; }
+.food-body p { margin-top: 12px; color: #5c574b; font-size: 14.5px; text-align: justify; }
+/* 左右交替排布，避免版式呆板 */
+.food-item:nth-child(even) { grid-template-columns: 1fr 300px; }
+.food-item:nth-child(even) figure { order: 2; }
+.food-item:nth-child(even) .food-body { padding: 14px 0 14px 34px; }
+
+/* ---------- 巴蜀文化（深咖底色分区） ---------- */
+.culture { background: #2e2a24; }
+.culture .section-head h2 { color: #f6efe0; }
+.culture .section-head .sub { color: #b9ae98; }
+.culture-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.culture-card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius); overflow: hidden;
+  transition: transform .3s, background .3s;
+}
+.culture-card:hover { transform: translateY(-6px); background: rgba(255,255,255,.09); }
+.culture-card figure { height: 150px; overflow: hidden; }
+.culture-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.culture-card:hover img { transform: scale(1.07); }
+.culture-body { padding: 16px 16px 20px; }
+.culture-body h3 { font-size: 16.5px; color: #fff; letter-spacing: 2px; }
+.culture-body p { margin-top: 9px; font-size: 13px; color: #cdc3ae; line-height: 1.7; text-align: justify; }
+/* ---------- 行程攻略 ---------- */
+.route-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 64px; }
+.route-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 30px 28px;
+  box-shadow: var(--shadow); transition: transform .3s, border-color .3s;
+}
+.route-card:hover { transform: translateY(-5px); border-color: var(--red); }
+.route-card .badge {
+  display: inline-block; background: var(--red); color: #fff;
+  font-size: 12px; padding: 4px 14px; border-radius: 999px;
+  letter-spacing: 2px; margin-bottom: 14px;
+}
+.route-card h3 { font-size: 19px; margin-bottom: 4px; }
+.route-card .desc { font-size: 13px; color: var(--ink-soft); }
+.route-card ul { margin-top: 16px; }
+.route-card li {
+  position: relative; padding: 8px 0 8px 22px;
+  font-size: 14px; border-bottom: 1px dashed var(--line);
+}
+.route-card li:last-child { border-bottom: 0; }
+.route-card li::before {
+  content: ""; position: absolute; left: 2px; top: 17px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--coffee);
+}
+/* ---------- 出行贴士 ---------- */
+.tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.tip { display: flex; gap: 18px; background: var(--bg-alt); padding: 26px; border-radius: var(--radius); transition: transform .3s; }
+.tip:hover { transform: translateY(-4px); }
+.tip .ico {
+  flex: none; width: 52px; height: 52px; border-radius: 50%;
+  background: #fff; border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; box-shadow: var(--shadow);
+}
+.tip h3 { font-size: 16.5px; margin-bottom: 6px; letter-spacing: 1px; }
+.tip p { font-size: 13.5px; color: var(--ink-soft); text-align: justify; }
+
+/* ---------- 城市美图墙 ---------- */
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 190px; gap: 14px;
+}
+.gallery-grid figure { overflow: hidden; border-radius: 12px; position: relative; }
+.gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.gallery-grid figure:hover img { transform: scale(1.07); }
+.gallery-grid figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 28px 14px 10px; font-size: 13px; letter-spacing: 1px; color: #fff;
+  background: linear-gradient(transparent, rgba(0,0,0,.55));
+  opacity: 0; transition: opacity .35s;
+}
+.gallery-grid figure:hover figcaption { opacity: 1; }
+
+/* ---------- 页脚 ---------- */
+.footer { background: #26221d; color: #a89f8c; padding: 56px 0 26px; }
+.footer-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.f-logo { font-size: 20px; color: #fff; letter-spacing: 4px; }
+.f-logo span { color: var(--red); }
+.f-slogan { margin-top: 12px; font-size: 13.5px; letter-spacing: 2px; }
+.f-nav { margin-top: 20px; }
+.f-nav a { margin: 0 12px; font-size: 13.5px; color: #a89f8c; transition: color .25s; }
+.f-nav a:hover { color: #e0b6a0; }
+.copy {
+  margin-top: 24px; padding-top: 20px; width: 100%;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 12.5px; letter-spacing: 1px;
+}
+/* ---------- 响应式适配 ---------- */
+@media (max-width: 960px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-photo img { height: 320px; }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .culture-list { grid-template-columns: repeat(3, 1fr); }
+  .route-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 165px; }
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
+@media (max-width: 640px) {
+  .nav-inner { height: 60px; }
+  .logo { font-size: 17px; }
+  .logo span { font-size: 9px; letter-spacing: 3px; }
+  .site-nav ul { gap: 16px; }
+  .site-nav a { font-size: 13.5px; }
+  .hero h1 { letter-spacing: 4px; }
+  section { padding: 64px 0; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .food-item,
+  .food-item:nth-child(even) { grid-template-columns: 1fr; }
+  .food-item figure { height: 190px; }
+  .food-body { padding: 4px 24px 22px !important; }
+  .food-body em { font-size: 24px; }
+  .culture-list { grid-template-columns: repeat(2, 1fr); }
+  .tips-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 130px; }
+  .section-head h2 { font-size: 27px; }
+}
+
+
+
+
+</style>
+</head>
+<body>
+<!-- ===== 顶部导航 ===== -->
+<header class="site-header">
+  <div class="nav-inner container">
+    <a class="logo" href="#home">成都旅游<span>CHENGDU TRAVEL</span></a>
+    <nav class="site-nav" aria-label="主导航">
+      <ul>
+        <li><a href="#home">首页</a></li>
+        <li><a href="#spots">景点</a></li>
+        <li><a href="#food">美食</a></li>
+        <li><a href="#culture">文化</a></li>
+        <li><a href="#guide">攻略</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Banner 大图 ===== -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="hero-tag">CHENGDU TRAVEL GUIDE</p>
+    <h1>天府之国 · 成都</h1>
+    <p class="hero-sub">一座来了就不想走的城市</p>
+    <p class="hero-desc">三千年来城名未改、城址未迁。这里有憨态可掬的大熊猫，有麻辣鲜香的火锅串串，有青城山下的道风仙骨，也有茶馆里一坐就是一下午的慢时光。</p>
+    <div class="hero-btns">
+      <a class="btn btn-solid" href="#spots">开始探索</a>
+      <a class="btn btn-ghost" href="#guide">查看攻略</a>
+    </div>
+  </div>
+</section>
+
+<main>
+<!-- ===== 城市简介 ===== -->
+<section class="about container" id="about">
+  <div class="section-head">
+    <p class="en">About Chengdu</p>
+    <h2>城市印象</h2>
+    <div class="line"></div>
+    <p class="sub">雪山下的公园城市，烟火里的幸福成都</p>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>成都，简称"蓉"，别称锦官城、芙蓉城，地处四川盆地西部、成都平原腹地。自秦代筑城以来，两千三百年间城名未改、城址未迁，这在中国城市史上极为罕见。</p>
+      <p>这座城市的迷人之处，不在于某一座地标，而在于它的日常：竹椅上的盖碗茶、街巷里的麻将声、深夜依旧滚烫的红油锅底。成都人不慌不忙，把生活过成了一种手艺。</p>
+      <div class="tags">
+        <span>慢生活</span><span>烟火气</span><span>巴适得板</span>
+      </div>
+      <div class="stats">
+        <div><b>2300+</b><i>年建城史</i></div>
+        <div><b>2100万+</b><i>常住人口</i></div>
+        <div><b>16.9℃</b><i>年平均气温</i></div>
+        <div><b>NO.1</b><i>中国最具幸福感城市</i></div>
+      </div>
+    </div>
+    <div class="about-photo">
+      <video src="/Photo/微信视频2026-10-29_092341_213.mp4" controls width="920" height="400"></video>
+    </div>
+  </div>
+</section>
+<!-- ===== 热门景点 ===== -->
+<section class="spots" id="spots">
+  <div class="container">
+    <div class="section-head">
+      <p class="en">Attractions</p>
+      <h2>热门景点</h2>
+      <div class="line"></div>
+      <p class="sub">九个不能错过的地方，慢慢逛，别赶路</p>
+    </div>
+    <div class="grid-3">
+      <article class="spot-card">
+        <figure><img src="/Photo/熊猫.jpg"></figure>
+        <div class="spot-body">
+          <h3>大熊猫繁育研究基地<small>Panda Base</small></h3>
+          <p class="intro">世界著名的大熊猫迁地保护与研究基地，上百只"滚滚"从幼崽到老年应有尽有，月亮产房的熊猫幼崽更是萌翻全场。</p>
+          <p class="reason">推荐理由：来成都没看熊猫，等于白来。清晨去，滚滚最活跃。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/宽窄_1.jpg" alt="宽窄巷子"></figure>
+        <div class="spot-body">
+          <h3>宽窄巷子<small>Kuanzhai Alley</small></h3>
+          <p class="intro">宽巷子、窄巷子、井巷子三条清代古街，青黛砖瓦、四合院落，是老成都"千年少城"最后的遗存。</p>
+          <p class="reason">推荐理由：一杯盖碗茶坐一下午，最成都的慢生活都在这里。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/锦里_1.jpg" alt="锦里古街"></figure>
+        <div class="spot-body">
+          <h3>锦里<small>Jinli Street</small></h3>
+          <p class="intro">武侯祠旁的仿古街，夜晚红灯笼亮起时最有味道，皮影、糖画、三大炮沿途一字排开，被CNN评为全球最美街道之一。</p>
+          <p class="reason">推荐理由：傍晚去，白天与夜晚两种风景一次看全。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/武侯寺.jpeg" alt="成都武侯祠"></figure>
+        <div class="spot-body">
+          <h3>武侯祠<small>Wuhou Shrine</small></h3>
+          <p class="intro">全国唯一的君臣合祀祠庙，三国迷的朝圣地，"攻心联"与岳飞手书《出师表》碑刻都值得细细品味。</p>
+          <p class="reason">推荐理由：红墙竹影小道，是成都最出片的拍照机位。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/草堂.jpg" alt="杜甫草堂"></figure>
+        <div class="spot-body">
+          <h3>杜甫草堂<small>Du Fu Cottage</small></h3>
+          <p class="intro">诗圣流寓成都时的故居，"晓看红湿处，花重锦官城"就写于此。园林清幽，四季皆有景致。</p>
+          <p class="reason">推荐理由：适合安排一个安静的上午，慢慢走、慢慢读。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/都江堰.jpg" alt="都江堰 &amp;w=800&amp;h=500&amp;c=7"></figure>
+        <div class="spot-body">
+          <h3>都江堰<small>Dujiangyan</small></h3>
+          <p class="intro">两千多年前李冰父子主持修建的水利工程，鱼嘴分水、飞沙堰泄洪、宝瓶口引水，至今仍在灌溉成都平原。</p>
+          <p class="reason">推荐理由：站在安澜索桥上看岷江奔涌，方知古人智慧。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/青城山.jpg" alt="青城山"></figure>
+        <div class="spot-body">
+          <h3>青城山<small>Mount Qingcheng</small></h3>
+          <p class="intro">中国道教发源地之一，素有"青城天下幽"之誉。前山问道观古迹，后山看水听泉声，一天能收获两种体验。</p>
+          <p class="reason">推荐理由：夏季避暑首选，记得穿一双舒服的鞋。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/太古里.jpg" alt="成都太古里"></figure>
+        <div class="spot-body">
+          <h3>太古里<small>Taikoo Li</small></h3>
+          <p class="intro">玻璃幕墙与川西民居院落共存的开放式街区，古今碰撞却又意外和谐，IFS楼顶的爬墙熊猫就在隔壁。</p>
+          <p class="reason">推荐理由：逛店拍照两不误，夜晚的灯光比白天更有味道。</p>
+        </div>
+      </article>
+      <article class="spot-card">
+        <figure><img src="/Photo/九眼桥.jpg" alt="九眼桥夜景"></figure>
+        <div class="spot-body">
+          <h3>九眼桥<small>Jiuyanqiao</small></h3>
+          <p class="intro">府南河畔的酒吧一条街，因古九眼石桥得名。夜幕降临后灯影摇曳、江风徐来，是成都夜生活的代名词。</p>
+          <p class="reason">推荐理由：看完夜景，顺路找一家小酒馆坐坐。</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- ===== 舌尖成都 ===== -->
+<section class="food container" id="food">
+  <div class="section-head">
+    <p class="en">Chengdu Food</p>
+    <h2>舌尖成都</h2>
+    <div class="line"></div>
+    <p class="sub">在成都，辣是一种语言，吃是一种日常</p>
+  </div>
+
+  <article class="food-item">
+    <figure><img src="/Photo/火锅.jpg" alt="成都火锅"></figure>
+    <div class="food-body">
+      <em>01</em><h3>成都火锅</h3>
+      <p>牛油锅底咕嘟翻滚，毛肚鸭肠"七上八下"，再蘸一碟香油蒜泥——辣得冒汗也停不下筷子，这是成都人刻在骨子里的热爱。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/串串.jpg" alt="串串香"></figure>
+    <div class="food-body">
+      <em>02</em><h3>串串香</h3>
+      <p>火锅的"街头版"，竹签串起荤素一切，在红汤里随意涮煮，最后数签子结账。人均不高，却能吃出满桌热闹。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/冒菜.jpg" alt="冒菜"></figure>
+    <div class="food-body">
+      <em>03</em><h3>冒菜</h3>
+      <p>"一个人的火锅"。竹篓烫好，浇上一勺滚烫红油，撒把豆芽香菜。一碗下肚，快捷、便宜又满足。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/麻辣兔头.webp" alt="麻辣兔头"></figure>
+    <div class="food-body">
+      <em>04</em><h3>兔头</h3>
+      <p>成都人的心头好，五香或麻辣皆可。"啃兔头"是门手艺——先吮再掰，连骨头缝里的麻辣都舍不得放过。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/担担面.webp" alt="担担面"></figure>
+    <div class="food-body">
+      <em>05</em><h3>担担面</h3>
+      <p>面条细薄筋道，红油、芽菜、花生碎一拌，又麻又香。当年挑担叫卖的小吃，如今是成都面馆的招牌。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/钟水饺.jpg" alt="钟水饺"></figure>
+    <div class="food-body">
+      <em>06</em><h3>钟水饺</h3>
+      <p>纯肉馅水饺，淋上红油与特制甜蒜汁，咸、甜、辣在口中层层递进，是传承百年的老字号味道。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/甜水面.webp" alt="甜水面"></figure>
+    <div class="food-body">
+      <em>07</em><h3>甜水面</h3>
+      <p>筷子般粗的面条，裹上浓甜的红酱油与花椒红油，甜、辣、麻一次到位，口感扎实得像成都人的性格。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/冰粉.jpg" alt="冰粉"></figure>
+    <div class="food-body">
+      <em>08</em><h3>冰粉</h3>
+      <p>红糖冰粉撒上山楂碎与花生粒，冰凉滑嫩。它是每一顿火锅的"救星"，解辣神器，成都夏天的白月光。</p>
+    </div>
+  </article>
+  <article class="food-item">
+    <figure><img src="/Photo/钵钵鸡.jpg" alt="钵钵鸡"></figure>
+    <div class="food-body">
+      <em>09</em><h3>钵钵鸡</h3>
+      <p>藤椒或红油汤底里，泡着串好的鸡肉、藕片、木耳。冷着吃也过瘾，越泡越入味，是乐山传到成都的宝藏小吃。</p>
+    </div>
+  </article>
+</section>
+<!-- ===== 巴蜀文化 ===== -->
+<section class="culture" id="culture">
+  <div class="container">
+    <div class="section-head">
+      <p class="en">Ba-Shu Culture</p>
+      <h2>巴蜀文化</h2>
+      <div class="line"></div>
+      <p class="sub">读懂这些，才算真正到过成都</p>
+    </div>
+    <div class="culture-list">
+      <article class="culture-card">
+        <figure><img src="/Photo/川剧变脸.webp" alt="川剧变脸"></figure>
+        <div class="culture-body">
+          <h3>川剧变脸</h3>
+          <p>抬手、甩头之间瞬间变换脸谱，是川剧最具标志性的绝技，值得进剧场看一场。</p>
+        </div>
+      </article>
+      <article class="culture-card">
+        <figure><img src="/Photo/蜀绣.webp" alt="蜀绣"></figure>
+        <div class="culture-body">
+          <h3>蜀绣</h3>
+          <p>中国四大名绣之一，针脚整齐、线片光亮，熊猫与芙蓉花是最经典的题材。</p>
+        </div>
+      </article>
+      <article class="culture-card">
+        <figure><img src="/Photo/成都茶馆.jpeg" alt="成都茶馆"></figure>
+        <div class="culture-body">
+          <h3>茶馆文化</h3>
+          <p>"坐茶馆"是成都人的日常。人民公园鹤鸣茶社的盖碗茶，一喝就是一百多年。</p>
+        </div>
+      </article>
+      <article class="culture-card">
+        <figure><img src="/Photo/市井文化.jpg" alt="宽窄巷子市井文化"></figure>
+        <div class="culture-body">
+          <h3>市井文化</h3>
+          <p>街边竹椅、麻将声、苍蝇馆子的镬气——成都的烟火气，都藏在街巷深处。</p>
+        </div>
+      </article>
+      <article class="culture-card">
+        <figure><img src="/Photo/三国文化.jpg" alt="三国文化"></figure>
+        <div class="culture-body">
+          <h3>三国文化</h3>
+          <p>武侯祠、锦里、万里桥……成都拥有全国最丰富的三国文化遗存，蜀汉故事俯拾皆是。</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- ===== 旅行攻略 ===== -->
+<section class="guide container" id="guide">
+  <div class="section-head">
+    <p class="en">Travel Guide</p>
+    <h2>行程攻略</h2>
+    <div class="line"></div>
+    <p class="sub">一日太赶，三日刚好，把节奏交给成都</p>
+  </div>
+  <div class="route-grid">
+    <article class="route-card">
+      <span class="badge">一日游</span>
+      <h3>城市精华线</h3>
+      <p class="desc">适合时间紧张的差旅与中转游客</p>
+      <ul>
+        <li>上午：大熊猫繁育研究基地（早去）</li>
+        <li>下午：武侯祠 → 锦里古街</li>
+        <li>傍晚：宽窄巷子喝茶看夕阳</li>
+        <li>晚上：九眼桥夜景 + 江边小酌</li>
+      </ul>
+    </article>
+    <article class="route-card">
+      <span class="badge">二日游</span>
+      <h3>山水人文线</h3>
+      <p class="desc">在市区线基础上加入都江堰青城山</p>
+      <ul>
+        <li>D1：熊猫基地 → 武侯祠 → 锦里 → 九眼桥</li>
+        <li>D2 上午：都江堰景区（乘高铁约30分钟）</li>
+        <li>D2 下午：青城前山问道</li>
+        <li>D2 晚：返回市区吃一顿火锅收尾</li>
+      </ul>
+    </article>
+    <article class="route-card">
+      <span class="badge">三日游</span>
+      <h3>深度慢游线</h3>
+      <p class="desc">推荐节奏，把成都过成成都人的样子</p>
+      <ul>
+        <li>D1：熊猫基地 → 文殊院 → 太古里</li>
+        <li>D2：都江堰 → 青城山（住山下民宿）</li>
+        <li>D3：杜甫草堂 → 武侯祠 → 锦里 → 宽窄巷子</li>
+        <li>彩蛋：找家茶馆看一场川剧变脸</li>
+      </ul>
+    </article>
+  </div>
+  <div class="tips-grid">
+    <div class="tip">
+      <div class="ico">🌸</div>
+      <div>
+        <h3>最佳季节</h3>
+        <p>3–6月与9–11月最舒适。夏天闷热多雨，注意防暑；冬天湿冷但能偶遇"窗含西岭千秋雪"的雪山奇观。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="ico">🚇</div>
+      <div>
+        <h3>交通指南</h3>
+        <p>天府、双流两大机场均可达；地铁基本覆盖主要景区。去都江堰、青城山推荐城际高铁，单程约30–40分钟。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="ico">🏨</div>
+      <div>
+        <h3>住宿推荐</h3>
+        <p>首选春熙路—太古里商圈，出行与觅食都方便；预算充足可选九眼桥江景房，夜景加分；文艺青年可住宽窄巷子附近的老院子。</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="ico">⚠️</div>
+      <div>
+        <h3>避坑指南</h3>
+        <p>熊猫基地一定赶早（开园时滚滚最活跃）；景区周边"免费茶叶品鉴"套路别理会；火锅点鸳鸯锅一点也不丢人。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== 城市美图墙 ===== -->
+<section class="gallery container" id="gallery">
+  <div class="section-head">
+    <p class="en">City Moments</p>
+    <h2>城市美图墙</h2>
+    <div class="line"></div>
+    <p class="sub">街头巷尾、灯火与人间，都是成都的样子</p>
+  </div>
+  <div class="gallery-grid">
+    <figure><img src="/Photo/成都街头.jpg" alt="成都街头"><figcaption>街巷烟火</figcaption></figure>
+    <figure><img src="/Photo/夜景.v1" alt="成都夜景"><figcaption>锦官夜色</figcaption></figure>
+    <figure><img src="/Photo/茶馆竹椅.jpg" alt="茶馆竹椅"><figcaption>盖碗茶时光</figcaption></figure>
+    <figure><img src="/Photo/hotpot.webp" alt="热气腾腾的火锅"><figcaption>红油滚滚</figcaption></figure>
+    <figure><img src="/Photo/panda.v2" alt="大熊猫"><figcaption>滚滚日常</figcaption></figure>
+    <figure><img src="/Photo/宽窄巷子青砖灰瓦.webp" alt="宽窄巷子青砖灰瓦"><figcaption>青砖灰瓦</figcaption></figure>
+    <figure><img src="/Photo/锦里红灯笼.jpg" alt="锦里红灯笼"><figcaption>锦里灯笼</figcaption></figure>
+    <figure><img src="/Photo/府南河夜景.webp" alt="府南河夜景"><figcaption>府南河畔</figcaption></figure>
+  </div>
+</section>
+</main>
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="f-logo">成都旅游<span> · </span>CHENGDU TRAVEL GUIDE</p>
+    <p class="f-slogan">愿你在成都，把日子过成诗。</p>
+    <nav class="f-nav" aria-label="页脚导航">
+      <a href="#home">首页</a><a href="#spots">景点</a><a href="#food">美食</a><a href="#culture">文化</a><a href="#guide">攻略</a>
+    </nav>
+    <p class="copy">© 2025 成都旅游网站 Chengdu Travel Guide · 课程作业演示页面，仅用于学习交流</p>
+  </div>
+</footer>
+
+
+
+
+
+
+
+
+</body>
+</html>
